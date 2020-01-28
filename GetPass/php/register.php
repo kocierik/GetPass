@@ -3,6 +3,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 include_once "../config.php";
+session_start();
 $conn = new mysqli($nameserver, $user, $password, $dbname)
   or die("Connect failed: %s\n" . $conn->error);
 mysqli_set_charset($conn, 'utf8mb4');  // procedural style
@@ -21,11 +22,12 @@ if (mysqli_num_rows($res_e) > 0) {
     VALUES ('$name_nome','$name_email','$name_password')";
 }
 if (mysqli_query($conn, $sql)) {
-
-  header("location: http://localhost/GetPass/profile.php");
+  $_SESSION["username"] = $name_nome;
+  $_SESSION["Id"] = mysqli_insert_id($conn);
+  header("location: http://localhost/GetPass/question.php?Id=" . $_SESSION['Id'] . "&username=" . $_SESSION['username']);
 } else {
   echo "ERROR: Could not able to execute $sql. " . mysqli_error($conn);
-  EchoMessage($sql, "http://localhost/GetPass/register.php");
+  EchoMessage($sql, "http://localhost/GetPass/index.php");
 }
 
 mysqli_close($conn);

@@ -5,9 +5,11 @@ $conn = new mysqli($nameserver, $user, $password, $dbname)
 mysqli_set_charset($conn, 'utf8mb4');
 
 session_start();
+include_once "/home/erik/projects/GetPass/php/login.php";
+$_SESSION['user'] = $user_id;
 
-$user_check = $_SESSION['login_user'];
-$query = "SELECT email FROM users WHERE email='$user_check'";
+
+$query = "SELECT email FROM users WHERE email='$user_id'";
 $ses_sql = mysqli_query($conn, $query);
 $row = mysqli_fetch_assoc($ses_sql);
 $login_session = $row['email'];
